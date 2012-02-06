@@ -89,9 +89,14 @@
             return 0;
           });
 
+          var source = 0;
+
           $.each(repos, function (i, repo) {
+            if (!repo.fork) source++;
             addRepo(repo);
           });
+
+          $("#num-source").text(source);
 
           // Sort by most-recently pushed to.
           repos.sort(function (a, b) {
@@ -103,14 +108,6 @@
           $.each(repos.slice(0, 3), function (i, repo) {
             addRecentlyUpdatedRepo(repo);
           });
-        });
-      });
-
-      $.getJSON("https://api.github.com/users/d0ugal/members?callback=?", function (result) {
-        var members = result.data;
-
-        $(function () {
-          $("#num-members").text(members.length);
         });
       });
 
@@ -216,9 +213,9 @@
         <div id="statistics" class="grid-1 alpha header">
           <h1>Statistics</h1>
           <p>
-            <a href="https://github.com/d0ugal/repositories"><span id="num-repos">&nbsp;</span> public repos</a>
+            <a href="https://github.com/d0ugal/repositories"><span id="num-source">&nbsp;</span> source repos</a>
             <br>
-            <a href="https://github.com/d0ugal"><span id="num-members">&nbsp;</span> members</a>
+            <a href="https://github.com/d0ugal/repositories"><span id="num-repos">&nbsp;</span> public repos</a>
           </p>
         </div>
 
