@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="assets/style.css">
     <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="assets/strftime.js"></script>
+    <script type="text/javascript" src="assets/locache.min.js"></script>
     <script type="text/javascript">
     (function ($, undefined) {
 
@@ -60,7 +61,7 @@
         $item.appendTo("#repos");
       }
 
-      $.getJSON("https://api.github.com/users/d0ugal/repos?callback=?", function (result) {
+      function parseRepos (result) {
         var repos = result.data;
 
         $(function () {
@@ -109,7 +110,18 @@
             addRecentlyUpdatedRepo(repo);
           });
         });
-      });
+      }
+
+      var repos = locache.get("repos");
+
+      if (!repos){
+        $.getJSON("https://api.github.com/users/d0ugal/repos?callback=?", function (result) {
+          locache.set("repos", result, 600);
+          parseRepos(result);
+        });
+      } else {
+        parseRepos(repos);
+      }
 
       function randomItem(array) {
         return array[Math.floor(Math.random() * array.length)];
