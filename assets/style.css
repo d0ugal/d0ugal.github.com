@@ -58,6 +58,7 @@ a:hover {
 #main h1, #main p {
   margin-left: 15px;
   margin-right: 15px;
+  margin-bottom: 10px;
 }
 
 #main p {
