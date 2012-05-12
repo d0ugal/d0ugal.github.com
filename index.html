@@ -99,6 +99,28 @@
 
           $("#num-source").text(source);
 
+          var languages = {};
+
+          $.each(repos, function (i, repo) {
+            var lang = repo.language;
+            if(lang){
+              languages[lang] = languages[lang] ? languages[lang] + 1 : 1;
+            }
+          });
+
+          var langugae_names = [];
+          $.each(languages, function(key, value){
+            langugae_names.push(key);
+          })
+          langugae_names.sort(function(a, b){
+            if (languages[a] > languages[b]) return -1;
+            if (languages[a] < languages[b]) return 1;
+            return 0;
+          })
+          languages_used = langugae_names.slice(0, -1).join(", ") + " and "+ langugae_names.slice(-1);
+
+          $("#repo-languages").text(languages_used);
+
           // Sort by most-recently pushed to.
           repos.sort(function (a, b) {
             if (a.pushed_at < b.pushed_at) return 1;
@@ -225,9 +247,10 @@
         <div id="statistics" class="grid-1 alpha header">
           <h1>Statistics</h1>
           <p>
-            <a href="https://github.com/d0ugal/repositories"><span id="num-source">&nbsp;</span> source repos</a>
+            <a href="https://github.com/d0ugal/repositories"><span id="num-source">&nbsp;</span> source </a>
+            and <a href="https://github.com/d0ugal/repositories"><span id="num-repos">&nbsp;</span> public repos </a>
             <br>
-            <a href="https://github.com/d0ugal/repositories"><span id="num-repos">&nbsp;</span> public repos</a>
+            <span id="languages-used">Languages used;</span> <span id="repo-languages"></span></a>
           </p>
         </div>
 
